@@ -50,12 +50,13 @@ Al momento de realizar los commits a las tareas de las respectivas Epics se llev
 
 ###Estructura de commits
 
-feat: Una nueva característica para el usuario.
-fix: Arregla un bug que afecta al usuario.
-perf: Cambios que mejoran el rendimiento del sitio.
-build: Cambios en el sistema de build, tareas de despliegue o instalación.
-ci: Cambios en la integración continua.
-docs: Cambios en la documentación.
-refactor: Refactorización del código como cambios de nombre de variables o funciones.
-style: Cambios de formato, tabulaciones, espacios o puntos y coma, etc; no afectan al usuario.
-test: Añade tests o refactoriza uno existente.
+1. feat: Una nueva característica para el usuario.
+2. fix: Arregla un bug que afecta al usuario.
+3. perf: Cambios que mejoran el rendimiento del sitio.
+4. build: Cambios en el sistema de build, tareas de despliegue o instalación.
+5. ci: Cambios en la integración continua.
+6. docs: Cambios en la documentación.
+7. refactor: Refactorización del código como cambios de nombre de variables o funciones.
+8. style: Cambios de formato, tabulaciones, espacios o puntos y coma, etc; no afectan al usuario.
+9. test: Añade tests o refactoriza uno existente.
+
