@@ -15,12 +15,17 @@ Gestor de hojas de vida
 - MVC
 - Razor
 - Blazor
+- Css
+- JavaScript
 
 ###Frameworks
 - .Net
 
 ###Librerías
 - EntityFrameworkCore
+- Bootstrap
+- Jwt
+- Bcrypt
 
 ###Bases de datos
 - MySql
