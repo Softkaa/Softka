@@ -1,4 +1,5 @@
 # Softka
+![softka_logo](https://github.com/Softkaa/Softka/assets/141048801/4d73158d-56e6-4f33-8689-172cbe4936ee)
 Gestor de hojas de vida
 
 ##Equipo de trabajo
@@ -6,6 +7,7 @@ Gestor de hojas de vida
 2. Mateo Vélez
 3. Anthony Muñoz
 4. Fernando José Gómez Toro
+
 
 ###Especificación del proyecto
 
