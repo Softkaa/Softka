@@ -38,6 +38,12 @@
 ### Jira
 ![image](https://github.com/Softkaa/Softka/assets/141048801/f0fceca5-9b93-4858-8ca0-6c3d89e92367)
 
+### Diagarama
+![image](https://github.com/Softkaa/Softka/assets/141048801/aaf7db80-35b5-4c5f-ace1-62725e96e7b4)
+![image](https://github.com/Softkaa/Softka/assets/141048801/9be9cb97-53a8-4dff-8749-02dc280fdc2e)
+
+
+
 
 ### Url Jira
 https://fernando2000.atlassian.net/jira/plans/1/scenarios/1/timeline?vid=4
