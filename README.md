@@ -33,6 +33,12 @@
 ### Bases de datos
 - MySql
 
+### Convención para nombrar variables
+Las variables se van a nombrar de tipo CamelCase, por ejemplo
+- var MiBook = "El señor de los anillos"
+
+De esta forma es como nombraremos la variables en toda la vida del proyecto.
+
 ### Jira
 ![image](https://github.com/Softkaa/Softka/assets/141048801/a52fcb22-ece3-4610-ba3f-c8d4706a4f26)
 
