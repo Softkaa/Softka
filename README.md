@@ -29,6 +29,8 @@
 - Bootstrap
 - Jwt
 - Bcrypt
+- FluentValidation
+  
 
 ### Bases de datos
 - MySql
@@ -40,11 +42,14 @@ Las variables se van a nombrar de tipo CamelCase, por ejemplo
 De esta forma es como nombraremos la variables en toda la vida del proyecto.
 
 ### Jira
-![image](https://github.com/Softkaa/Softka/assets/141048801/a52fcb22-ece3-4610-ba3f-c8d4706a4f26)
+![image](https://github.com/Softkaa/Softka/assets/141048801/f0fceca5-9b93-4858-8ca0-6c3d89e92367)
 
-### Diagrama
-![Captura de pantalla 2024-07-09 233735](https://github.com/Softkaa/Softka/assets/141048801/78fc71b2-28b1-49c9-a31d-0d2e03c50af9)
-![Captura de pantalla 2024-07-09 233825](https://github.com/Softkaa/Softka/assets/141048801/5d6ec047-33bd-4162-bc15-338d6f7a2e70)
+### Diagarama
+![image](https://github.com/Softkaa/Softka/assets/141048801/aaf7db80-35b5-4c5f-ace1-62725e96e7b4)
+![image](https://github.com/Softkaa/Softka/assets/141048801/9be9cb97-53a8-4dff-8749-02dc280fdc2e)
+
+
+
 
 ### Url Jira
 https://fernando2000.atlassian.net/jira/plans/1/scenarios/1/timeline?vid=4
