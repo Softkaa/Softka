@@ -29,6 +29,8 @@
 - Bootstrap
 - Jwt
 - Bcrypt
+- FluentValidation
+  
 
 ### Bases de datos
 - MySql
