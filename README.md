@@ -36,6 +36,9 @@
 ### Jira
 ![image](https://github.com/Softkaa/Softka/assets/141048801/a52fcb22-ece3-4610-ba3f-c8d4706a4f26)
 
+### Diagrama
+![Captura de pantalla 2024-07-09 233735](https://github.com/Softkaa/Softka/assets/141048801/78fc71b2-28b1-49c9-a31d-0d2e03c50af9)
+![Captura de pantalla 2024-07-09 233825](https://github.com/Softkaa/Softka/assets/141048801/5d6ec047-33bd-4162-bc15-338d6f7a2e70)
 
 ### Url Jira
 https://fernando2000.atlassian.net/jira/plans/1/scenarios/1/timeline?vid=4
