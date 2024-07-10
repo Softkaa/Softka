@@ -34,7 +34,8 @@
 - MySql
 
 ### Jira
-![image](https://github.com/Softkaa/Softka/assets/141048801/a209542a-5fda-4dd5-91b3-c0230d3f3e30)
+![image](https://github.com/Softkaa/Softka/assets/141048801/a52fcb22-ece3-4610-ba3f-c8d4706a4f26)
+
 
 ### Url Jira
 https://fernando2000.atlassian.net/jira/plans/1/scenarios/1/timeline?vid=4
