@@ -1,7 +1,16 @@
+using Microsoft.EntityFrameworkCore;
+using Softka.Infrastructure.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+//service to BaseContext
+builder.Services.AddDbContext<BaseContext>(opt => 
+                opt.UseMySql(
+                    builder.Configuration.GetConnectionString("DbConnection"),
+                    Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.20-mysql")));
 
 var app = builder.Build();
 
@@ -19,6 +28,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllerRoute(
     name: "default",
