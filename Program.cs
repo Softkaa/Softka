@@ -1,5 +1,9 @@
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using Softka.Infrastructure.Data;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +18,27 @@ builder.Services.AddDbContext<BaseContext>(opt =>
 
 var app = builder.Build();
 
+//add JWT settings
+builder.Services.AddAuthentication(opt => {
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options => 
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = @Environment.GetEnvironmentVariable("Issuer"), 
+        ValidAudience = @Environment.GetEnvironmentVariable("Audience"),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes
+        (builder.Configuration.GetSection("Jwt:key").Value))
+    };
+});
+
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -27,8 +52,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-app.UseAuthorization();
 app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
