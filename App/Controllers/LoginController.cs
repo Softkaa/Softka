@@ -77,4 +77,12 @@ public class LoginController : Controller
         ModelState.AddModelError("", "Invalid login attemp.");
         return View();
     }
+
+    public IActionResult Logout()
+    {
+        //clear cookies
+        HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+        return RedirectToAction("Index", "Home");
+    }
 }
