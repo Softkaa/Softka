@@ -35,6 +35,9 @@
 ### Bases de datos
 - MySql
 
+### Gestor Login
+- Firebase
+
 ### Convención para nombrar variables
 Las variables se van a nombrar de tipo CamelCase, por ejemplo
 - var MiBook = "El señor de los anillos"
