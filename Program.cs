@@ -1,5 +1,8 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.EntityFrameworkCore;
 using Softka.Infrastructure.Data;
+using Softka.Utils.PasswordHashing;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +14,20 @@ builder.Services.AddDbContext<BaseContext>(opt =>
                 opt.UseMySql(
                     builder.Configuration.GetConnectionString("DbConnection"),
                     Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.20-mysql")));
+
+//Service to Login Google
+builder.Services.AddAuthentication(opt => {
+    opt.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    opt.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+})
+.AddCookie()
+.AddGoogle(options => {
+    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
+    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+});
+
+builder.Services.AddScoped<Bcrypt>(); 
 
 var app = builder.Build();
 
@@ -24,6 +41,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseCookiePolicy();
 
 app.UseRouting();
 

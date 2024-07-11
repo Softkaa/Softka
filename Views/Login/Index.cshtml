@@ -1,0 +1,26 @@
+@model User
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+@if (ViewBag.Error != null)
+{
+    <p class="text-danger">@ViewBag.Error</p>
+}
+
+<form method="post">
+    <div class="form-control">
+        <label for="Email">Usuario:</label>
+        <input type="text" asp-for="Email" id="Email" class="form-control" required>
+    </div>
+    <div class="form-control">
+        <label for="Password">Contraseña:</label>
+        <input type="text" asp-for="Password" id="Password" class="form-control" required>
+    </div>
+    <div class="m-4">
+        <button type="submit" class="btn btn-sm btn-dark">Login</button>
+        <a class="btn btn-sm btn-danger" href="@Url.Action("LoginResponse", "Login")">Login With Google</a>
+    </div>
+    
+</form>
