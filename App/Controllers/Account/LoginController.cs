@@ -1,18 +1,21 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Softka.Models;
 using Softka.Utils.PasswordHashing;
 using Softka.Infrastructure.Data;
+using Softka.Services;
+using Softka.Models.DTOs;
 
 public class AccountController : Controller
 {
     private readonly Bcrypt _bCrypt;
     private readonly BaseContext _context;
+    private readonly IJwtRepository _jwtRepository;
 
-    public AccountController(Bcrypt bCrypt, BaseContext context)
+    public AccountController(Bcrypt bCrypt, BaseContext context, IJwtRepository jwtRepository)
     {
         _bCrypt = bCrypt;
         _context = context;
+        _jwtRepository = jwtRepository;
     }
 
     [HttpPost]
@@ -21,13 +24,22 @@ public class AccountController : Controller
         var user = _context.Users.FirstOrDefault(u => u.Email == email);
         if (user != null && _bCrypt.VerifyPassword(password, user.Password))
         {
-            // The password is success
-            // Here you can manage the login logic
-            return RedirectToAction("Index", "Home");
+            var UserDto = new UserDto{
+                Email = user.Email,
+                Password = user.Password
+            };
+            //we Genered Token
+            var Token = _jwtRepository.GenerateToken(UserDto);  // In this line i had a one mistake so i created one UserDto and with this use the Dto.
+                       
+            return Ok(new { token = Token, RedirectUrl = Url.Action("Index", "Home")});
+        }
+        else 
+        {
+            // The password is incorrect
+            ModelState.AddModelError("", "Invalid login attemp.");
+            return View();
         }
 
-        // The password is incorrect
-        ModelState.AddModelError("", "Invalid login attemp.");
-        return View();
+        
     }
 }

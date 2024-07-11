@@ -33,7 +33,7 @@ namespace Authcontroller
         var Claims = new List<Claim>
         {
             new Claim(ClaimTypes.NameIdentifier, User.Id.ToString()),
-            new Claim("di", User.Id.ToString())
+            new Claim("id", User.Id.ToString())
         };
         //Add token opstions
         var TokenOptions = new JwtSecurityToken(
