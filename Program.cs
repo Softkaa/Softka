@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore;
 using Softka.Infrastructure.Data;
+using Softka.Services;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Softkat.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +39,8 @@ builder.Services.AddAuthentication(opt => {
         (builder.Configuration.GetSection("Jwt:key").Value))
     };
 });
+//add the Scooped of JWT
+builder.Services.AddScoped<IJwtRepository, JwtRepository>();
 
 
 // Configure the HTTP request pipeline.
