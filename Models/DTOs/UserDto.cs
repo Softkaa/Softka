@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Softka.Models;
 
 namespace Softka.Models.DTOs
 {
