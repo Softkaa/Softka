@@ -9,12 +9,14 @@ using Softkat.Services;
 using Softka.Utils.PasswordHashing;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
+using DotNetEnv;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+Env.Load();
 
 //service to BaseContext
 builder.Services.AddDbContext<BaseContext>(opt => 
