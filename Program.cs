@@ -4,10 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Softka.Infrastructure.Data;
 using Softka.Utils.PasswordHashing;
 
+using DotNetEnv;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+Env.Load();
 
 //service to BaseContext
 builder.Services.AddDbContext<BaseContext>(opt => 
@@ -23,8 +27,8 @@ builder.Services.AddAuthentication(opt => {
 })
 .AddCookie()
 .AddGoogle(options => {
-    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+    options.ClientId = @Environment.GetEnvironmentVariable("ClientId");
+    options.ClientSecret = @Environment.GetEnvironmentVariable("ClientSecret");
 });
 
 builder.Services.AddScoped<Bcrypt>(); 
