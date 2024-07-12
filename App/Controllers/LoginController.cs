@@ -49,7 +49,14 @@ public class LoginController : Controller
         ViewBag.Error = "Credenciales inválidas";
 
         var user = _context.Users.FirstOrDefault(u => u.Email == email);
-        if (user != null && _bCrypt.VerifyPassword(password, user.Password))
+
+        if(user == null)  //We made validation with User
+        {
+            ViewBag.Error = ("", "Please fill all field");
+            return View();
+        }
+
+        if (_bCrypt.VerifyPassword(password, user.Password))
         {
             var UserDto = new UserDto{
                 Email = user.Email,
@@ -58,6 +65,10 @@ public class LoginController : Controller
             //we Genered Token
             var Token = _jwtRepository.GenerateToken(UserDto);  // In this line i had a one mistake so i created one UserDto and with this use the Dto.
                        
+            //we set the Token in the Cookies
+            Response.Headers.Add("Authorization", "Bearer " + Token);
+            Response.Cookies.Append("jwt", Token);
+
             return Ok(new { token = Token, RedirectUrl = Url.Action("Index", "Home")});
         }
         else 
