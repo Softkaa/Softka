@@ -15,9 +15,5 @@ namespace Softka.App.Controllers
 
       
     }
-
-    internal class AuthorizationRequiredAttribute : Attribute
-    {
-    }
 }
 
