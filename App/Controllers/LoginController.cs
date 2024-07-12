@@ -80,6 +80,12 @@ public class LoginController : Controller
     {
         var AuthResult = HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme).Result;
 
+        //get information of user
+        var UserInfo = AuthResult.Principal.Identities.FirstOrDefault().Claims.Select(claims => new {
+            claims.Type,
+            claims.Value
+        });
+
         if(!AuthResult.Succeeded)
         {
             return RedirectToAction("LoginResponse");
