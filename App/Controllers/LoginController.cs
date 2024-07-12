@@ -1,72 +1,89 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Softka.Models;
 using Softka.Utils.PasswordHashing;
 using Softka.Infrastructure.Data;
-using Softka.Services;
-using Softka.Models.DTOs;
-using Softka.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
 
-public class AccountController : Controller
+public class LoginController : Controller
 {
     private readonly Bcrypt _bCrypt;
     private readonly BaseContext _context;
-    private readonly IJwtRepository _jwtRepository;
 
-    public AccountController(Bcrypt bCrypt, BaseContext context, IJwtRepository jwtRepository)
+    public LoginController(Bcrypt bCrypt, BaseContext context)
     {
         _bCrypt = bCrypt;
         _context = context;
-        _jwtRepository = jwtRepository;
     }
 
-    public ActionResult Index()
+    public IActionResult Index()
     {
         return View();
     }
 
-    [HttpPost]
-    public ActionResult Login(string email, string password)
+    [HttpGet]
+    public IActionResult LoginResponse()
     {
-        var user = _context.Users.FirstOrDefault(u => u.Email == email);
+        var RedirectoGoogle =  new AuthenticationProperties { RedirectUri = Url.Action("GoogleLogin") };
+        return Challenge(RedirectoGoogle, GoogleDefaults.AuthenticationScheme);
+    }
+
+    [HttpGet]
+    public IActionResult GoogleLogin()
+    {
+        var AuthResult = HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme).Result;
+
+        if(!AuthResult.Succeeded)
+        {
+            return RedirectToAction("LoginResponse");
+        }
+
+        //Redirect to pricipal page
+        return RedirectToAction("Index", "Home");
+    }
+
+    [HttpPost]
+    public async Task<ActionResult> Index(string email, string password)
+    {
+
+        if(email == "correo@correo.com" && password == "password")
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, email),
+                new Claim(ClaimTypes.Role, "User")
+            };
+            var Identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var Principal = new ClaimsPrincipal(Identity);
+            HttpContext.SignInAsync(Principal);
+            return RedirectToAction("Index", "Home");
+        }
+        ViewBag.Error = "Credenciales inválidas";
+
+        //Bcrypt
+        var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
         if (user != null && _bCrypt.VerifyPassword(password, user.Password))
         {
-            var UserDto = new UserDto{
-                Email = user.Email,
-                Password = user.Password
-            };
-            //we Genered Token
-            var Token = _jwtRepository.GenerateToken(UserDto);  // In this line i had a one mistake so i created one UserDto and with this use the Dto.
-                       
-            return Ok(new { token = Token, RedirectUrl = Url.Action("Index", "Home")});
+            // The password is success
+            // Here you can manage the login logic
+            return RedirectToAction("Index", "Home");
         }
-        else 
-        {
-            // The password is incorrect
-            ModelState.AddModelError("", "Invalid login attemp.");
-            return View();
-        }
-    }
 
-    public ActionResult Register()
-    {
+        // The password is incorrect
+        ModelState.AddModelError("", "Invalid login attemp.");
         return View();
     }
 
-    [HttpPost]
-    public ActionResult Register(User user)
+    
+    public async Task<IActionResult> Logout()
     {
-        if (ModelState.IsValid)
-        {
-            // Hash the password
-            user.Password = _bCrypt.HashPassword(user.Password);
+        //clear cookies
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            // Add the user to the database
-            _bCrypt.CreateUser(user);
-
-            return RedirectToAction("Index");
-        }
-
-        // The model is invalid
-        return View(user);
+        return RedirectToAction("Index", "Home");
     }
 }
