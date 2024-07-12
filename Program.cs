@@ -6,11 +6,19 @@ using Softka.Infrastructure.Data;
 using Softka.Services;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Softkat.Services;
+using Softka.Utils.PasswordHashing;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using DotNetEnv;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+Env.Load();
+
+Env.Load();
 
 //service to BaseContext
 builder.Services.AddDbContext<BaseContext>(opt => 
@@ -18,7 +26,17 @@ builder.Services.AddDbContext<BaseContext>(opt =>
                     builder.Configuration.GetConnectionString("DbConnection"),
                     Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.20-mysql")));
 
-
+//Service to Login Google
+builder.Services.AddAuthentication(opt => {
+    opt.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    opt.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+})
+.AddCookie()
+.AddGoogle(options => {
+    options.ClientId = @Environment.GetEnvironmentVariable("ClientId");
+    options.ClientSecret = @Environment.GetEnvironmentVariable("ClientSecret");
+});
 
 //add JWT settings
 builder.Services.AddAuthentication(opt => {
@@ -35,11 +53,12 @@ builder.Services.AddAuthentication(opt => {
         ValidateIssuerSigningKey = true,
         ValidIssuer = @Environment.GetEnvironmentVariable("Issuer"), 
         ValidAudience = @Environment.GetEnvironmentVariable("Audience"),
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("djnjcnrjcclmedleñdmededb-ndnuenduenduedyexbgbe"))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("JwtToken"))
     };
 });
 //add the Scooped of JWT
 builder.Services.AddScoped<IJwtRepository, JwtRepository>();
+builder.Services.AddScoped<Bcrypt>(); 
 var app = builder.Build();
 
 

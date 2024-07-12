@@ -1,31 +1,53 @@
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
 using Softka.Utils.PasswordHashing;
 using Softka.Infrastructure.Data;
-using Softka.Services;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Google;
 using Softka.Models.DTOs;
+using Microsoft.AspNetCore.Mvc;
+using Softka.Services;
 
-public class AccountController : Controller
+
+public class LoginController : Controller
 {
     private readonly Bcrypt _bCrypt;
     private readonly BaseContext _context;
     private readonly IJwtRepository _jwtRepository;
 
-    public AccountController(Bcrypt bCrypt, BaseContext context, IJwtRepository jwtRepository)
+    public LoginController(Bcrypt bCrypt, BaseContext context, IJwtRepository jwtRepository)
     {
         _bCrypt = bCrypt;
         _context = context;
         _jwtRepository = jwtRepository;
+
     }
 
-    public ActionResult Index()
+    public IActionResult Index()
     {
         return View();
     }
 
     [HttpPost]
-    public ActionResult Login(string email, string password)// This is the function to call 
+    public ActionResult Index(string email, string password)// This is the function to call 
+
     {
+        if(email == "correo@correo.com" && password == "password")
+        {
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, email),
+                new Claim(ClaimTypes.Role, "User")
+            };
+            var Identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var Principal = new ClaimsPrincipal(Identity);
+            HttpContext.SignInAsync(Principal);
+            return RedirectToAction("Index", "Home");
+        }
+
+        ViewBag.Error = "Credenciales inválidas";
+
         var user = _context.Users.FirstOrDefault(u => u.Email == email);
         if (user != null && _bCrypt.VerifyPassword(password, user.Password))
         {
@@ -44,7 +66,41 @@ public class AccountController : Controller
             ModelState.AddModelError("", "Invalid login attemp.");
             return View();
         }
+    }    
 
-        
+    [HttpGet]
+    public IActionResult LoginResponse()
+    {
+        var RedirectoGoogle =  new AuthenticationProperties { RedirectUri = Url.Action("GoogleLogin") };
+        return Challenge(RedirectoGoogle, GoogleDefaults.AuthenticationScheme);
+    }
+
+    [HttpGet]
+    public IActionResult GoogleLogin()
+    {
+        var AuthResult = HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme).Result;
+
+        //get information of user
+        var UserInfo = AuthResult.Principal.Identities.FirstOrDefault().Claims.Select(claims => new {
+            claims.Type,
+            claims.Value
+        });
+
+        if(!AuthResult.Succeeded)
+        {
+            return RedirectToAction("LoginResponse");
+        }
+
+        //Redirect to pricipal page
+        return RedirectToAction("Index", "Home");
+    }
+    
+    public async Task<IActionResult> Logout()
+    {
+        //clear cookies
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+        return RedirectToAction("Index", "Home");
+
     }
 }
