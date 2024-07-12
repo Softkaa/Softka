@@ -53,7 +53,7 @@ builder.Services.AddAuthentication(opt => {
         ValidateIssuerSigningKey = true,
         ValidIssuer = @Environment.GetEnvironmentVariable("Issuer"), 
         ValidAudience = @Environment.GetEnvironmentVariable("Audience"),
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("djnjcnrjcclmedleñdmededb-ndnuenduenduedyexbgbe"))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("JwtToken"))
     };
 });
 //add the Scooped of JWT
