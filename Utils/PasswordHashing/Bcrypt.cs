@@ -30,6 +30,7 @@ namespace Softka.Utils.PasswordHashing
         public void CreateUser(User user)
         {
             // Add the object to db
+            user.DateRegister = DateTime.Now;
             _context.Users.Add(user);
             _context.SaveChanges();
         }
