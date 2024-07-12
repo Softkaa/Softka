@@ -18,8 +18,13 @@ public class AccountController : Controller
         _jwtRepository = jwtRepository;
     }
 
+    public ActionResult Index()
+    {
+        return View();
+    }
+
     [HttpPost]
-    public ActionResult Login(string email, string password)
+    public ActionResult Login(string email, string password)// This is the function to call 
     {
         var user = _context.Users.FirstOrDefault(u => u.Email == email);
         if (user != null && _bCrypt.VerifyPassword(password, user.Password))
