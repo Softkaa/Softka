@@ -11,6 +11,7 @@ namespace Softka.Models
         public int Id { get; set; }
         public string? Names { get; set; }
         public string? LastNames { get; set; }
+        public string? TypeDocument { get; set; }
         public string? Document { get; set; }
         public string? Email { get; set; }
         public int Age { get; set; }
