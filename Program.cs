@@ -18,6 +18,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 Env.Load();
 
+Env.Load();
+
 //service to BaseContext
 builder.Services.AddDbContext<BaseContext>(opt => 
                 opt.UseMySql(
@@ -78,6 +80,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Login}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
