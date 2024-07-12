@@ -2,11 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Softka.Infrastructure.Data;
+using Softka.Models;
 
 namespace Softka.Utils.PasswordHashing
 {
     public class Bcrypt
     {
+        private readonly BaseContext _context;
+
+        public Bcrypt(BaseContext context)
+        {
+            _context = context;
+        }
         public string HashPassword(string password)
         {   
             // Generate the password hash
@@ -17,6 +25,13 @@ namespace Softka.Utils.PasswordHashing
         {
             // Verify the password against the hash
             return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
+        }
+
+        public void CreateUser(User user)
+        {
+            // Add the object to db
+            _context.Users.Add(user);
+            _context.SaveChanges();
         }
     }
 }

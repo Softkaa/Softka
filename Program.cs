@@ -6,6 +6,10 @@ using Softka.Infrastructure.Data;
 using Softka.Services;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Softkat.Services;
+using Softka.Utils.PasswordHashing;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +22,17 @@ builder.Services.AddDbContext<BaseContext>(opt =>
                     builder.Configuration.GetConnectionString("DbConnection"),
                     Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.20-mysql")));
 
-
+//Service to Login Google
+builder.Services.AddAuthentication(opt => {
+    opt.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    opt.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+})
+.AddCookie()
+.AddGoogle(options => {
+    options.ClientId = @Environment.GetEnvironmentVariable("ClientId");
+    options.ClientSecret = @Environment.GetEnvironmentVariable("ClientSecret");
+});
 
 //add JWT settings
 builder.Services.AddAuthentication(opt => {
@@ -40,6 +54,7 @@ builder.Services.AddAuthentication(opt => {
 });
 //add the Scooped of JWT
 builder.Services.AddScoped<IJwtRepository, JwtRepository>();
+builder.Services.AddScoped<Bcrypt>(); 
 var app = builder.Build();
 
 
@@ -61,6 +76,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Login}/{action=Index}/{id?}");
 
 app.Run();
