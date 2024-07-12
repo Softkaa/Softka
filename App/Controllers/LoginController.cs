@@ -4,6 +4,7 @@ using Softka.Utils.PasswordHashing;
 using Softka.Infrastructure.Data;
 using Softka.Services;
 using Softka.Models.DTOs;
+using Softka.Models;
 
 public class AccountController : Controller
 {
@@ -16,6 +17,11 @@ public class AccountController : Controller
         _bCrypt = bCrypt;
         _context = context;
         _jwtRepository = jwtRepository;
+    }
+
+    public ActionResult Index()
+    {
+        return View();
     }
 
     [HttpPost]
@@ -39,7 +45,28 @@ public class AccountController : Controller
             ModelState.AddModelError("", "Invalid login attemp.");
             return View();
         }
+    }
 
-        
+    public ActionResult Register()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    public ActionResult Register(User user)
+    {
+        if (ModelState.IsValid)
+        {
+            // Hash the password
+            user.Password = _bCrypt.HashPassword(user.Password);
+
+            // Add the user to the database
+            _bCrypt.CreateUser(user);
+
+            return RedirectToAction("Index");
+        }
+
+        // The model is invalid
+        return View(user);
     }
 }

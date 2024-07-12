@@ -18,8 +18,6 @@ builder.Services.AddDbContext<BaseContext>(opt =>
                     builder.Configuration.GetConnectionString("DbConnection"),
                     Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.20-mysql")));
 
-var app = builder.Build();
-
 //add JWT settings
 builder.Services.AddAuthentication(opt => {
     opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -35,13 +33,13 @@ builder.Services.AddAuthentication(opt => {
         ValidateIssuerSigningKey = true,
         ValidIssuer = @Environment.GetEnvironmentVariable("Issuer"), 
         ValidAudience = @Environment.GetEnvironmentVariable("Audience"),
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes
-        (builder.Configuration.GetSection("Jwt:key").Value))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("djnjcnrjcclmedleñdmededb-ndnuenduenduedyexbgbe"))
     };
 });
 //add the Scooped of JWT
 builder.Services.AddScoped<IJwtRepository, JwtRepository>();
 
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
