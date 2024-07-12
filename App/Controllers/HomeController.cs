@@ -13,10 +13,11 @@ namespace Softka.App.Controllers
             return View();
         }
 
-        private class AuthorizationRequiredAttribute : Attribute
-        {
-        }
+      
     }
 
+    internal class AuthorizationRequiredAttribute : Attribute
+    {
+    }
 }
 
