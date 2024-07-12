@@ -32,7 +32,13 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "Jwt":{
+        "key" : "djnjcnrjcclmedleñdmededb-ndnuenduenduedyexbgbe",
+        "Issuer": "http://localhost:5108",
+        "Audience": "http://localhost:5108",
       }
+
     }
   }
 }
