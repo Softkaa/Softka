@@ -78,10 +78,11 @@ public class LoginController : Controller
         return View();
     }
 
-    public IActionResult Logout()
+    
+    public async Task<IActionResult> Logout()
     {
         //clear cookies
-        HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
         return RedirectToAction("Index", "Home");
     }
