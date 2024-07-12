@@ -2,26 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-<<<<<<< HEAD
 using Softka.Infrastructure.Data;
 using Softka.Models;
-=======
->>>>>>> google-login
 
 namespace Softka.Utils.PasswordHashing
 {
     public class Bcrypt
     {
-<<<<<<< HEAD
         private readonly BaseContext _context;
 
         public Bcrypt(BaseContext context)
         {
             _context = context;
         }
-
-=======
->>>>>>> google-login
         public string HashPassword(string password)
         {   
             // Generate the password hash
@@ -33,7 +26,6 @@ namespace Softka.Utils.PasswordHashing
             // Verify the password against the hash
             return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
         }
-<<<<<<< HEAD
 
         public void CreateUser(User user)
         {
@@ -41,7 +33,5 @@ namespace Softka.Utils.PasswordHashing
             _context.Users.Add(user);
             _context.SaveChanges();
         }
-=======
->>>>>>> google-login
     }
 }
