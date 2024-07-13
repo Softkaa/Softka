@@ -1,4 +1,4 @@
--- Active: 1720588487963@@brb7cf2qxxih75x8siuv-mysql.services.clever-cloud.com@3306
+-- Active: 1720750817208@@brb7cf2qxxih75x8siuv-mysql.services.clever-cloud.com@3306@brb7cf2qxxih75x8siuv
 
 --Table Users
 create table Users(
@@ -150,3 +150,6 @@ VALUES
 ('Ref3', 'ref3@example.com', '3109876543', 3),
 ('Ref4', 'ref4@example.com', '3105678901', 4),
 ('Ref5', 'ref5@example.com', '3106789012', 5);
+
+
+SELECT * FROM Users;

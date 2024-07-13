@@ -6,6 +6,7 @@ using Softka.Infrastructure.Data;
 using Softka.Services;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Softkat.Services;
+using Softka.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,8 @@ builder.Services.AddDbContext<BaseContext>(opt =>
                 opt.UseMySql(
                     builder.Configuration.GetConnectionString("DbConnection"),
                     Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.20-mysql")));
+
+builder.Services.Configure<Email>(builder.Configuration.GetSection("EmailSettings"));
 
 //add JWT settings
 builder.Services.AddAuthentication(opt => {
@@ -38,6 +41,7 @@ builder.Services.AddAuthentication(opt => {
 });
 //add the Scooped of JWT
 builder.Services.AddScoped<IJwtRepository, JwtRepository>();
+builder.Services.AddTransient<MailRepository>();
 
 var app = builder.Build();
 
