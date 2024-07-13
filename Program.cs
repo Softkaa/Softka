@@ -59,6 +59,10 @@ builder.Services.AddAuthentication(opt => {
 //add the Scooped of JWT
 builder.Services.AddScoped<IJwtRepository, JwtRepository>();
 builder.Services.AddScoped<Bcrypt>(); 
+
+builder.Services.AddScoped<UserService>(); //service to validate models
+
+
 var app = builder.Build();
 
 
