@@ -10,7 +10,6 @@ namespace Softka.Services
         //public void Create (User user); // Method for create User Basically the register.
         public void Delete (User user); // Delete User
         public void Update (User user); //Update User
-
         
     }
 }
