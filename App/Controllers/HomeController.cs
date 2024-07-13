@@ -1,5 +1,7 @@
-using System.Diagnostics;
-using Microsoft.AspNetCore.Authorization;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Softka.Utils;
 
@@ -12,10 +14,5 @@ namespace Softka.App.Controllers
         {
             return View();
         }
-
-        private class AuthorizationRequiredAttribute : Attribute
-        {
-        }
     }
-
 }

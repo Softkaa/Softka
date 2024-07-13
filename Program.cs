@@ -6,18 +6,37 @@ using Softka.Infrastructure.Data;
 using Softka.Services;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Softkat.Services;
+using Softka.Utils.PasswordHashing;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using DotNetEnv;
 using Softka.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+Env.Load();
+
+
 
 //service to BaseContext
 builder.Services.AddDbContext<BaseContext>(opt => 
                 opt.UseMySql(
                     builder.Configuration.GetConnectionString("DbConnection"),
                     Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.20-mysql")));
+
+//Service to Login Google
+builder.Services.AddAuthentication(opt => {
+    opt.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    opt.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
+})
+.AddCookie()
+.AddGoogle(options => {
+    options.ClientId = @Environment.GetEnvironmentVariable("ClientId");
+    options.ClientSecret = @Environment.GetEnvironmentVariable("ClientSecret");
+});
 
 builder.Services.Configure<Email>(builder.Configuration.GetSection("EmailSettings"));
 
@@ -36,14 +55,19 @@ builder.Services.AddAuthentication(opt => {
         ValidateIssuerSigningKey = true,
         ValidIssuer = @Environment.GetEnvironmentVariable("Issuer"), 
         ValidAudience = @Environment.GetEnvironmentVariable("Audience"),
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("djnjcnrjcclmedleñdmededb-ndnuenduenduedyexbgbe"))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("JwtToken"))
     };
 });
 //add the Scooped of JWT
 builder.Services.AddScoped<IJwtRepository, JwtRepository>();
+builder.Services.AddScoped<Bcrypt>(); 
+
+builder.Services.AddScoped<UserService>(); //service to validate models
+
 builder.Services.AddTransient<MailRepository>();
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -63,6 +87,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=User}/{action=Index}/{id?}");
 
 app.Run();

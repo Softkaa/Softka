@@ -1,4 +1,4 @@
--- Active: 1720750817208@@brb7cf2qxxih75x8siuv-mysql.services.clever-cloud.com@3306@brb7cf2qxxih75x8siuv
+-- Active: 1720588487963@@brb7cf2qxxih75x8siuv-mysql.services.clever-cloud.com@3306
 
 --Table Users
 create table Users(
