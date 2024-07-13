@@ -10,7 +10,7 @@ using Softka.Utils.PasswordHashing;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using DotNetEnv;
-
+using Softka.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +18,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 Env.Load();
 
-Env.Load();
+
 
 //service to BaseContext
 builder.Services.AddDbContext<BaseContext>(opt => 
@@ -37,6 +37,8 @@ builder.Services.AddAuthentication(opt => {
     options.ClientId = @Environment.GetEnvironmentVariable("ClientId");
     options.ClientSecret = @Environment.GetEnvironmentVariable("ClientSecret");
 });
+
+builder.Services.Configure<Email>(builder.Configuration.GetSection("EmailSettings"));
 
 //add JWT settings
 builder.Services.AddAuthentication(opt => {
@@ -62,6 +64,7 @@ builder.Services.AddScoped<Bcrypt>();
 
 builder.Services.AddScoped<UserService>(); //service to validate models
 
+builder.Services.AddTransient<MailRepository>();
 
 var app = builder.Build();
 
