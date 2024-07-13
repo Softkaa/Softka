@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Softka.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Softka.Services;
+using Softka.Models;
 
 
 public class LoginController : Controller
@@ -31,7 +32,6 @@ public class LoginController : Controller
 
     [HttpPost]
     public ActionResult Index(string email, string password)// This is the function to call 
-
     {
         if(email == "correo@correo.com" && password == "password")
         {
@@ -77,6 +77,7 @@ public class LoginController : Controller
             ModelState.AddModelError("", "Invalid login attemp.");
             return View();
         }
+        
     }    
 
     [HttpGet]

@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using DotNetEnv;
 using Softka.Models;
+using FluentValidation;
+using Softka.Validators;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -62,7 +64,7 @@ builder.Services.AddAuthentication(opt => {
 builder.Services.AddScoped<IJwtRepository, JwtRepository>();
 builder.Services.AddScoped<Bcrypt>(); 
 
-builder.Services.AddScoped<UserService>(); //service to validate models
+builder.Services.AddTransient<IValidator<User>, UserValidator>(); //service to validate models
 
 builder.Services.AddTransient<MailRepository>();
 
