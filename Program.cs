@@ -10,9 +10,13 @@ using Softka.Utils.PasswordHashing;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using DotNetEnv;
+//Add the Logging
+using Microsoft.Extensions.Logging;
+
 using Softka.Models;
 using FluentValidation;
 using Softka.Validators;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -64,9 +68,18 @@ builder.Services.AddAuthentication(opt => {
 builder.Services.AddScoped<IJwtRepository, JwtRepository>();
 builder.Services.AddScoped<Bcrypt>(); 
 
+//Add the Scooped of Method GeAll
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+// we configured teh logger
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
+
 builder.Services.AddTransient<IValidator<User>, UserValidator>(); //service to validate models
 
 builder.Services.AddTransient<MailRepository>();
+
 
 var app = builder.Build();
 

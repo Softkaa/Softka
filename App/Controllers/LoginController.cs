@@ -8,7 +8,9 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Softka.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Softka.Services;
+using Microsoft.Extensions.Logging;
 using Softka.Models;
+
 
 
 public class LoginController : Controller
@@ -16,12 +18,15 @@ public class LoginController : Controller
     private readonly Bcrypt _bCrypt;
     private readonly BaseContext _context;
     private readonly IJwtRepository _jwtRepository;
+    //Inyecction of prube
+    private readonly ILogger<LoginController> _logger;  // This logger helpme to resolve the bug of the login
 
-    public LoginController(Bcrypt bCrypt, BaseContext context, IJwtRepository jwtRepository)
+    public LoginController(Bcrypt bCrypt, BaseContext context, IJwtRepository jwtRepository, ILogger<LoginController> logger)
     {
         _bCrypt = bCrypt;
         _context = context;
         _jwtRepository = jwtRepository;
+        _logger = logger;
 
     }
 
@@ -33,6 +38,11 @@ public class LoginController : Controller
     [HttpPost]
     public ActionResult Index(string email, string password)// This is the function to call 
     {
+    if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+    {
+        ViewBag.ErrorMessage = "Plase fill all fields.";
+    }
+
         if(email == "correo@correo.com" && password == "password")
         {
             var claims = new List<Claim>
@@ -52,9 +62,17 @@ public class LoginController : Controller
 
         if(user == null)  //We made validation with User
         {
-            ViewBag.Error = ("", "Please fill all field");
+            ViewBag.Error = "The email or password are invalid.";
+            _logger.LogWarning("User not found with the email: {Email}", email);
             return View();
         }
+
+        _logger.LogInformation($"User found: {user.Email}");
+        _logger.LogInformation($"Stored password hash: {user.Password}");
+        _logger.LogInformation($"Entered password: {password}");   
+        
+
+
 
         if (_bCrypt.VerifyPassword(password, user.Password))
         {
@@ -75,6 +93,7 @@ public class LoginController : Controller
         {
             // The password is incorrect
             ModelState.AddModelError("", "Invalid login attemp.");
+            _logger.LogWarning("Invalid password for the email: {Email}", email);
             return View();
         }
         
@@ -91,12 +110,6 @@ public class LoginController : Controller
     public IActionResult GoogleLogin()
     {
         var AuthResult = HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme).Result;
-
-        //get information of user
-        var UserInfo = AuthResult.Principal.Identities.FirstOrDefault().Claims.Select(claims => new {
-            claims.Type,
-            claims.Value
-        });
 
         if(!AuthResult.Succeeded)
         {
