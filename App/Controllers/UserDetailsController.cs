@@ -14,16 +14,29 @@ namespace Softka.Controllers
         _userRepository = userRepository;
         //_helperUploadFiles = helperUpload; 
     }
-    [HttpGet]
-    public async Task <IEnumerable<User>> GetAll ()
-    {
+    // [HttpGet]
+    // public async Task <IEnumerable<User>> GetAll ()
+    // {
        
-        return await _userRepository.GetAll(); //This used when we List all
+    //     if(ModelState.IsValid)
+    //     {
+    //         await _userRepository.GetAll(); //This used when we List all
+    //         return View();
+    //     }
+    //     else
+    //     {
+    //         return NotFound();
+    //     }
+
+    //}
+    public IActionResult Details()
+    {
+        return View();
     }
 
     //we make the GetById
     [HttpGet("{id}")]
-    public async Task <User> GetById (int id)
+    public async Task <User> Details  (int id)
     {
         var User = await _userRepository.GetById(id);
          if (User == null)
