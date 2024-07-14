@@ -29,6 +29,7 @@
 - Bootstrap
 - Jwt
 - Bcrypt
+- DinkToPdf
 
 ### Bases de datos
 - MySql
