@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Softka.Infrastructure.Data;
 using Softka.Models;
+using Softka.Utils.PasswordHashing;
 
 namespace Softka.Services
 {
@@ -8,9 +9,35 @@ namespace Softka.Services
     public class UserRepository : IUserRepository
     {
         private readonly BaseContext _context; 
-        public UserRepository(BaseContext context)
+        private readonly Bcrypt _bcrypt;
+        public UserRepository(BaseContext context, Bcrypt bcrypt)
         {
             _context = context;
+            _bcrypt = bcrypt;
+        }
+
+        public void Add(User user, string password)
+        {
+
+            //We hash password
+            string HashedPassword = _bcrypt.HashPassword(password);
+
+            if(_bcrypt.VerifyPassword(password, HashedPassword))
+            {
+                //we indicate what the hashed password will be
+                user.Password = HashedPassword;
+
+
+                _context.Users.Add(user);
+                _context.SaveChanges();
+                Utils.Exceptions.ErrorExceptions.CreateOk(); 
+            }
+            else
+            {
+                Utils.Exceptions.ErrorExceptions.CreateBadRequest();
+            }
+
+            
         }
 
         public void Delete(User user)

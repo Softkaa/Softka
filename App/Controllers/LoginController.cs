@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Softka.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Softka.Services;
+using Softka.Utils;
 using Microsoft.Extensions.Logging;
 using Softka.Models;
 
@@ -36,23 +37,24 @@ public class LoginController : Controller
     }
 
     [HttpPost]
-    public ActionResult Index(string email, string password)// This is the function to call 
+    public ActionResult Index(string email, string password)
     {
-    if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
-    {
-        ViewBag.ErrorMessage = "Plase fill all fields.";
-    }
+        if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+        {
+            ViewBag.ErrorMessage = "Please fill all fields.";
+            return View();
+        }
 
-        if(email == "correo@correo.com" && password == "password")
+        if (email == "correo@correo.com" && password == "password")
         {
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, email),
                 new Claim(ClaimTypes.Role, "User")
             };
-            var Identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var Principal = new ClaimsPrincipal(Identity);
-            HttpContext.SignInAsync(Principal);
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+            HttpContext.SignInAsync(principal);
             return RedirectToAction("Index", "Home");
         }
 
@@ -60,7 +62,7 @@ public class LoginController : Controller
 
         var user = _context.Users.FirstOrDefault(u => u.Email == email);
 
-        if(user == null)  //We made validation with User
+        if (user == null)
         {
             ViewBag.Error = "The email or password are invalid.";
             _logger.LogWarning("User not found with the email: {Email}", email);
@@ -70,9 +72,6 @@ public class LoginController : Controller
         _logger.LogInformation($"User found: {user.Email}");
         _logger.LogInformation($"Stored password hash: {user.Password}");
         _logger.LogInformation($"Entered password: {password}");   
-        
-
-
 
         if (_bCrypt.VerifyPassword(password, user.Password))
         {
@@ -80,24 +79,20 @@ public class LoginController : Controller
                 Email = user.Email,
                 Password = user.Password
             };
-            //we Genered Token
-            var Token = _jwtRepository.GenerateToken(UserDto);  // In this line i had a one mistake so i created one UserDto and with this use the Dto.
-                       
-            //we set the Token in the Cookies
+            var Token = _jwtRepository.GenerateToken(UserDto);
             Response.Headers.Add("Authorization", "Bearer " + Token);
             Response.Cookies.Append("jwt", Token);
 
-            return Ok(new { token = Token, RedirectUrl = Url.Action("Index", "Home")});
+            return RedirectToAction("Index", "Home");
         }
         else 
         {
-            // The password is incorrect
-            ModelState.AddModelError("", "Invalid login attemp.");
+            ModelState.AddModelError("", "Invalid login attempt.");
             _logger.LogWarning("Invalid password for the email: {Email}", email);
             return View();
         }
-        
-    }    
+    }
+ 
 
     [HttpGet]
     public IActionResult LoginResponse()

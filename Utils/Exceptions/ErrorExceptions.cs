@@ -40,5 +40,16 @@ namespace Softka.Utils.Exceptions
                 Detail = "Bad Request. Please check the submitted data and try again."
             };
         }
+
+        //Status Ok
+        public static ProblemDetails CreateOk()
+        {
+            return new ProblemDetails
+            {
+                Title = "Status ok",
+                Status = StatusCodes.Status200OK,
+                Detail = "The request has been resolve"
+            };
+        }
     }
 }
