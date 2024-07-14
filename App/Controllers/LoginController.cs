@@ -70,21 +70,19 @@ public class LoginController : Controller
         _logger.LogInformation($"Entered password: {password}");   
         
 
-
-
         if (_bCrypt.VerifyPassword(password, user.Password))
         {
             var UserDto = new UserDto{
                 Email = user.Email,
                 Password = user.Password
-            };
-            //we Genered Token
-            var Token = _jwtRepository.GenerateToken(UserDto);  // In this line i had a one mistake so i created one UserDto and with this use the Dto.
-                       
-            //we set the Token in the Cookies
-            Response.Headers.Add("Authorization", "Bearer " + Token);
-            Response.Cookies.Append("jwt", Token);
+            };  
 
+        //we Genered Token
+
+        if(UserDto != null)
+        {
+            var Token = _jwtRepository.GenerateToken(UserDto);  // In this line i had a one mistake so i created one UserDto and with this use the Dto.
+            _logger.LogInformation($"Token generado{Token}");
             return Ok(new { token = Token, RedirectUrl = Url.Action("Index", "Home")});
         }
         else 
@@ -92,10 +90,11 @@ public class LoginController : Controller
             // The password is incorrect
             ModelState.AddModelError("", "Invalid login attemp.");
             _logger.LogWarning("Invalid password for the email: {Email}", email);
-            return View();
         }
         
     }    
+            return View();
+}
 
     [HttpGet]
     public IActionResult LoginResponse()

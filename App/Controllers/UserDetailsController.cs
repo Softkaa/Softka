@@ -12,7 +12,7 @@ namespace Softka.Controllers
     public UserDetailsController(IUserRepository userRepository)
     {
         _userRepository = userRepository;
-        //_helperUploadFiles = helperUpload;
+        //_helperUploadFiles = helperUpload; 
     }
     [HttpGet]
     public async Task <IEnumerable<User>> GetAll ()

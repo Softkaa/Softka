@@ -27,7 +27,7 @@ namespace Authcontroller
             {
                 return Unauthorized("Please fill  all fields");
             }
-            var SecretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("JwtToken")); //variable key
+            var SecretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(@Environment.GetEnvironmentVariable("JwtToken"))); //variable key
             var SigninCredentials = new SigningCredentials(SecretKey, SecurityAlgorithms.HmacSha256);
             //This apart id for permissions
             var Claims = new List<Claim>
