@@ -13,6 +13,10 @@ using DotNetEnv;
 //Add the Logging
 using Microsoft.Extensions.Logging;
 
+using Softka.Models;
+using FluentValidation;
+using Softka.Validators;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +24,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 Env.Load();
 
-Env.Load();
+
 
 //service to BaseContext
 builder.Services.AddDbContext<BaseContext>(opt => 
@@ -39,6 +43,8 @@ builder.Services.AddAuthentication(opt => {
     options.ClientId = @Environment.GetEnvironmentVariable("ClientId");
     options.ClientSecret = @Environment.GetEnvironmentVariable("ClientSecret");
 });
+
+builder.Services.Configure<Email>(builder.Configuration.GetSection("EmailSettings"));
 
 //add JWT settings
 builder.Services.AddAuthentication(opt => {
@@ -61,12 +67,19 @@ builder.Services.AddAuthentication(opt => {
 //add the Scooped of JWT
 builder.Services.AddScoped<IJwtRepository, JwtRepository>();
 builder.Services.AddScoped<Bcrypt>(); 
+
 //Add the Scooped of Method GeAll
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 // we configured teh logger
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
+
+
+builder.Services.AddTransient<IValidator<User>, UserValidator>(); //service to validate models
+
+builder.Services.AddTransient<MailRepository>();
+
 
 var app = builder.Build();
 
