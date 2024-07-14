@@ -27,12 +27,12 @@ namespace Softka.Utils.PasswordHashing
             return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
         }
 
-        public void CreateUser(User user)
+        /* public void CreateUser(User user)
         {
             // Add the object to db
             user.DateRegister = DateTime.Now;
             _context.Users.Add(user);
             _context.SaveChanges();
-        }
+        } */
     }
 }

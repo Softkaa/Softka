@@ -10,14 +10,14 @@ using Microsoft.AspNetCore.Mvc;
 using Softka.Services;
 using Softka.Models;
 
-public class UserController : Controller
+public class UserCreateController : Controller
 {
-    private readonly Bcrypt _bcrypt;
     private readonly BaseContext _context;
+    private readonly IUserRepository _userRepository;
 
-    public UserController(Bcrypt bcrypt, BaseContext context)
+    public UserCreateController(IUserRepository _userRepository, BaseContext context)
     {
-        _bcrypt = bcrypt;
+        this._userRepository = _userRepository;
         _context = context;
     }
 
@@ -27,20 +27,17 @@ public class UserController : Controller
     }
 
     [HttpPost]
-    public ActionResult Register(User user)
+    public ActionResult Register([FromBody] User user)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            // Hash the password
-            user.Password = _bcrypt.HashPassword(user.Password);
+            BadRequest();
 
-            // Add the user to the database
-            _bcrypt.CreateUser(user);
-
-            return RedirectToAction("Index");
+            return View();
         }
 
         // The model is invalid
-        return View(user);
+        _userRepository.Add(user, user.Password);
+        return RedirectToAction("Index", "Home");
     }
 }

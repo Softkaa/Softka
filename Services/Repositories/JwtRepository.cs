@@ -12,35 +12,29 @@ namespace Softkat.Services
 {
     public class JwtRepository : IJwtRepository
     {
-         private readonly BaseContext _context;
-        private readonly IConfiguration _configuration;
-        public JwtRepository(BaseContext context, IConfiguration configuration)
+        private readonly BaseContext _context;
+        public JwtRepository(BaseContext context)
         {
             _context = context;
-            _configuration = configuration;
         }
 
         public string GenerateToken(UserDto user)
         {
-            var SecretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+            var SecretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(@Environment.GetEnvironmentVariable("JwtToken")));
             var signinCredentials = new SigningCredentials(SecretKey, SecurityAlgorithms.HmacSha256);
-            // var Claims = new List<Claim>
-            // {
-            //     new Claim(ClaimTypes.NameIdentifier, User.Id.ToString()),
-            //     new Claim("id", user.Id.ToString())
-            // };
+            
             
             var TokenOptions = new JwtSecurityToken
             (
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
+                issuer: @Environment.GetEnvironmentVariable("Issuer"),
+                audience: @Environment.GetEnvironmentVariable("Audience"),
                 claims: new List<Claim>(),
-                expires: DateTime.Now.AddMinutes(30),
+                expires: DateTime.Now.AddHours(1),
                 signingCredentials: signinCredentials
             );
 
-            var Tokenstring = new JwtSecurityTokenHandler().WriteToken
-            (TokenOptions);
+            var Tokenstring = new JwtSecurityTokenHandler().WriteToken(TokenOptions);
+            
             return Tokenstring;
 
         }
