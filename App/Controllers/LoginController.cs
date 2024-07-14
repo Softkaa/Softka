@@ -9,6 +9,9 @@ using Softka.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Softka.Services;
 using Microsoft.Extensions.Logging;
+using Softka.Models;
+
+
 
 public class LoginController : Controller
 {
@@ -34,7 +37,6 @@ public class LoginController : Controller
 
     [HttpPost]
     public ActionResult Index(string email, string password)// This is the function to call 
-
     {
     if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
     {

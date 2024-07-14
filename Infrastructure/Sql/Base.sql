@@ -1,4 +1,4 @@
--- Active: 1720771168398@@brb7cf2qxxih75x8siuv-mysql.services.clever-cloud.com@3306
+-- Active: 1720588487963@@brb7cf2qxxih75x8siuv-mysql.services.clever-cloud.com@3306
 
 --Table Users
 create table Users(
@@ -24,20 +24,24 @@ VALUES
 
 create table Authentications(
     Id int auto_increment PRIMARY KEY,
-    Jwt text not null,
+    Token text not null,
+    RefreshToken text not null,
+    IssueDate date not null,
     ExpirationDate date not null,
+    IsActive bool not null,
+    IsRefreshed bool DEFAULT false,
     UserId int,
     Foreign Key (UserId) REFERENCES Users(Id)
 );
 
 --Insert information table Authentications
-INSERT INTO Authentications (Jwt, ExpirationDate, UserId)
+INSERT INTO Authentications (Token, RefreshToken, IssueDate, ExpirationDate, IsActive, UserId)
 VALUES 
-('jwtToken1', '2024-01-01', 1),
-('jwtToken2', '2024-02-01', 2),
-('jwtToken3', '2024-03-01', 3),
-('jwtToken4', '2024-04-01', 4),
-('jwtToken5', '2024-05-01', 5);
+('jwtToken1', 'refreshToken1', '2023-01-01', '2024-01-01', TRUE, 1),
+('jwtToken2', 'refreshToken2', '2023-02-01', '2024-02-01', TRUE, 2),
+('jwtToken3', 'refreshToken3', '2023-03-01', '2024-03-01', TRUE, 3),
+('jwtToken4', 'refreshToken4', '2023-04-01', '2024-04-01', TRUE, 4),
+('jwtToken5', 'refreshToken5', '2023-05-01', '2024-05-01', TRUE, 5);
 
 --Table UserRoles
 create table UserRoles(
@@ -56,11 +60,11 @@ VALUES
 --Table Roles
 create table Roles(
     Id int auto_increment PRIMARY KEY,
-    Name varchar(45) not null
+    Name enum("Admin", "User") not null
 );
 
 --Insert information table Roles
-INSERT INTO Roles (Name) VALUES ('Admin'), ('User'), ('Manager'), ('Developer'), ('Designer');
+INSERT INTO Roles (Name) VALUES ('Admin'), ('User');
 
 --Table Curriculums
 create table Curriculums(
