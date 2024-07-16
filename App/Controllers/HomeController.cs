@@ -82,7 +82,7 @@ namespace Softka.App.Controllers
             };
 
             var ArchivePdf = _converter.Convert(Pdf);
-            string PdfName = "curriculum_" + DateTime.Now.ToString("ddMMyyyyHHmmss") + "pdf";
+            string PdfName = "curriculum_" + DateTime.Now.ToString("ddMMyyyyHHmmss") + ".pdf";
 
 
             return File(ArchivePdf, "application/pdf", PdfName);
