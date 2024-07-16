@@ -17,11 +17,22 @@ using Softka.Models;
 using FluentValidation;
 using Softka.Validators;
 
+using DinkToPdf;
+using DinkToPdf.Contracts;
+using Softka.Utils.Extention;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+var Context = new CustomAssemblyLoad();
+var path = Context.LoadUnmanagedLibrary(Path.Combine(Directory.GetCurrentDirectory(), "C:/Users/fjgt2/OneDrive/Escritorio/Softka_Riwi/Softka/Utils/LibreryPdf/libwkhtmltox.dll"));
+builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+
+System.Console.WriteLine($"cargando archivo path: {path}");
+
 Env.Load();
 
 
@@ -102,6 +113,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=User}/{action=Index}/{id?}");
 
 app.Run();
