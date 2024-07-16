@@ -26,21 +26,20 @@
     </header>
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
 
-<a class="btn btn-dark" type="submit" asp-action="Logout" asp-controller="Login">Logout</a>
 
-@section Footer{
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - Softka - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-}
+<center>
+    <div class="text-center">
+        <h1 class="display-4">Welcome</h1>
+        <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    </div>
 
-<div>
-    <a asp-controller="Mail" asp-action="Index">hello</a>
-</div>
+    <a class="btn btn-dark" type="submit" asp-action="ShowPdfOnPage" asp-controller="Home" target="_blank">View pdf in new page</a>
+    <a class="btn btn-dark" type="submit" asp-action="DownloadPdf" asp-controller="Home">Download pdf</a>
+    <br/>
+    <br/>
+    <embed src="@Url.Action("ShowPdfOnPage", "Home")" width="800", height="400" type="application/pdf">
+
+</center>
+
+
