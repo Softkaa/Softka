@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Login";
 }
+
 <section class="vh-100">
     <div class="container py-5 h-100">
         <div class="row d-flex justify-content-center align-items-center h-100">
@@ -16,7 +17,9 @@
                             <div class="card-body p-4 p-lg-5 text-black">
 
                                 <form asp-controller="Login" method="post" asp-action="Index">
-
+                                    <div id="message" class="alert alert-success" role="alert" style="display:none;">
+                                        ¡Correo enviado con exito!
+                                    </div>
                                     <div class="d-flex align-items-center mb-3 pb-1">
                                         <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i>
                                         <span class="h1 fw-bold mb-0"><strong class="text-danger">SOFTKA</strong></span>
@@ -27,31 +30,37 @@
 
                                     <div data-mdb-input-init class="form-outline mb-4">
                                         <label class="form-label" for="Email">Email </label>
-                                        <input type="email" name="Email" id="email" class="form-control form-control-lg"/>
+                                        <input type="email" name="Email" id="email"
+                                            class="form-control form-control-lg" />
                                     </div>
 
                                     <div data-mdb-input-init class="form-outline mb-4">
                                         <label class="form-label" for="Password">Password</label>
-                                        <input type="password" name="Password" id="password" class="form-control form-control-lg"/>
+                                        <input type="password" name="Password" id="password"
+                                            class="form-control form-control-lg" />
                                     </div>
 
-                                      @if (TempData["Error"] != null)
+                                    @if (TempData["Error"] != null)
                                     {
                                         <div class="alert alert-danger" role="alert">
                                             @TempData["Error"]
                                         </div>
-                                    } 
+                                    }
 
                                     <div class="pt-1 mb-4">
-                                        <button class="btn btn-dark btn-lg btn-block"  style="width: 515px;" type="Submit">Login</button>
+                                        <button class="btn btn-dark btn-lg btn-block" style="width: 515px;"
+                                            type="Submit">Login</button>
                                     </div>
 
-                                    <a class="btn btn-danger btn-lg btn-block"  style="width: 515px; height: 45px;" href="@Url.Action("LoginResponse", "Login")">Login With Google</a>
-                                    <a class="small text-muted" data-bs-toggle="modal" data-bs-target="#exampleModal" href="#!">Forgot password?</a>
+                                    <a class="btn btn-danger btn-lg btn-block" style="width: 515px; height: 45px;"
+                                        href="@Url.Action("LoginResponse", "Login")">Login With Google</a>
+                                    <a class="small text-muted" id="modelRecuperar" href="#!">Forgot password?</a>
 
                                     <p class="mb-5 pb-lg-2" style="color: #393f81;">Don't have an account?</p>
+
                                     <a href="@Url.Action("Index", "User")" style="color: #393f81;">Register here</a>
     
+}
                                 </form>
 
                             </div>
@@ -65,34 +74,53 @@
 
 <section>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Recuperar Contraseña</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-         <form id="recoveryForm" action="/Mail/Recovery" method="post">
-    <div class="input-group flex-nowrap">
-        <input type="email" name="email" class="form-control" placeholder="Correo electrónico" aria-label="Correo electrónico" required>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Recuperar Contraseña</button>
-    </div>
-</form>
-    </div>
-  </div>
-</div>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Recuperar Contraseña</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="recoveryForm" action="/Mail/Recovery" method="post">
+                        <div class="input-group flex-nowrap">
+                            <input type="email" name="email" class="form-control" placeholder="Correo electrónico"
+                                aria-label="Correo electrónico" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" id="BtnComfir">Recuperar Contraseña</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
 </section>
 
-<script>
-$(document).ready(function() {
-    $("#recoveryForm").submit(function(event) {
 
-        $("#exampleModal").modal('hide');
+
+<script>
+
+    document.getElementById('modelRecuperar').addEventListener('click', function () {
+        var modal = new bootstrap.Modal(document.getElementById('exampleModal'));
+        modal.show();
     });
-});
+
+    document.getElementById('recoveryForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        showMessage();
+        var modal = bootstrap.Modal.getInstance(document.getElementById('exampleModal'));
+        modal.hide();
+    });
+
+    function showMessage() {
+        var messageDiv = document.getElementById('message');
+        messageDiv.style.display = 'block';
+        setTimeout(function () {
+            messageDiv.style.display = 'none';
+        }, 5000);
+    }
+
 </script>
