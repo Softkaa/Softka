@@ -10,12 +10,12 @@ using Microsoft.AspNetCore.Mvc;
 using Softka.Services;
 using Softka.Models;
 
-public class UserCreateController : Controller
+public class UserController : Controller
 {
     private readonly BaseContext _context;
     private readonly IUserRepository _userRepository;
 
-    public UserCreateController(IUserRepository _userRepository, BaseContext context)
+    public UserController(IUserRepository _userRepository, BaseContext context)
     {
         this._userRepository = _userRepository;
         _context = context;
