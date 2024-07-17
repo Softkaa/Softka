@@ -8,6 +8,8 @@ using Softka.Utils;
 using DinkToPdf;
 using DinkToPdf.Contracts;
 using Microsoft.AspNetCore.Http.Extensions;
+using Softka.Infrastructure.Data;
+using Softka.Models;
 
 namespace Softka.App.Controllers
 {
@@ -15,9 +17,11 @@ namespace Softka.App.Controllers
     public class HomeController : Controller
     {
         private readonly IConverter _converter;
-        public HomeController(IConverter converter)
+        private readonly BaseContext _context;
+        public HomeController(IConverter converter, BaseContext context)
         {
             _converter = converter;
+            _context = context;
         }
         public IActionResult Index()
         {
@@ -58,7 +62,7 @@ namespace Softka.App.Controllers
             return File(ArchivePdf, "application/pdf");
         }
 
-        public IActionResult DownloadPdf()
+        public IActionResult DownloadPdf(User user)
         {
             string ActualPage = HttpContext.Request.Path;
             string UrlPage = HttpContext.Request.GetEncodedUrl();
@@ -82,7 +86,8 @@ namespace Softka.App.Controllers
             };
 
             var ArchivePdf = _converter.Convert(Pdf);
-            string PdfName = "curriculum_" + DateTime.Now.ToString("ddMMyyyyHHmmss") + ".pdf";
+            var UserName = user.Names;
+            string PdfName = $"{UserName}_" + DateTime.Now.ToString("ddMMyyyyHHmmss") + ".pdf";
 
 
             return File(ArchivePdf, "application/pdf", PdfName);
