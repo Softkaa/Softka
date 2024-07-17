@@ -6,7 +6,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Softka</a>
+                <a class="navbar-brand" asp-area="" href="@Url.Action("Index", "Home")">Softka</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -21,6 +21,7 @@
                         </li>
                     </ul>
                 </div>
+                    <a class="btn text-dark" asp-area="" href="@Url.Action("Logout", "Login")">Logout</a>
             </div>
         </nav>
     </header>
@@ -31,7 +32,7 @@
 <center>
     <div class="text-center">
         <h1 class="display-4">Welcome</h1>
-        <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+        <p>Gestiona tu hoja de vida</p>
     </div>
 
     <a class="btn btn-dark" type="submit" href="@Url.Action("ViewToPdf", "Home")" target="_blank">View pdf in new page</a>
@@ -39,6 +40,8 @@
     <br/>
     <br/>
     <embed src="@Url.Action("ShowPdfOnPage", "Home")" width="800", height="400" type="application/pdf">
+    <br>
+    
 
 </center>
 
