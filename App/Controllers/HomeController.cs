@@ -7,7 +7,7 @@ using Softka.Utils;
 
 namespace Softka.App.Controllers
 {
-    [AuthorizationRequired]
+//     [AuthorizationRequired]
     public class HomeController : Controller
     {
         public IActionResult Index()

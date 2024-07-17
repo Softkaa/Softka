@@ -90,6 +90,7 @@ public class LoginController : Controller
             ModelState.AddModelError("", "Invalid login attempt.");
             _logger.LogWarning("Invalid password for the email: {Email}", email);
         }
+        return View();
     }
  
 

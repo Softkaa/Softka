@@ -27,7 +27,7 @@ create table Authentications(
     Token text not null,
     RefreshToken text not null,
     IssueDate date not null,
-    ExpirationDate date not null,
+    ExpirationDate date not null,   
     IsActive bool not null,
     IsRefreshed bool DEFAULT false,
     UserId int,
