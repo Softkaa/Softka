@@ -27,16 +27,17 @@ public class UserController : Controller
     }
 
     [HttpPost]
-    public ActionResult Register([FromBody] User user)
+    public ActionResult Register(User user)
     {
+        System.Console.WriteLine(user);
         if (!ModelState.IsValid)
         {
             BadRequest();
 
-            return View();
+            return View(user);
         }
 
-        // The model is invalid
+        
         _userRepository.Add(user, user.Password);
         return RedirectToAction("Index", "Home");
     }
