@@ -72,7 +72,7 @@ builder.Services.AddScoped<Bcrypt>();
 //Add the Scooped of Method GeAll
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 //Add the Repository of the Curriculum
-builder.Services.AddScoped<ICurriculumRepository, CurriculumRepository>();
+builder.Services.AddScoped<IPersonalInformationRepository, PersonalInformationRepository>();
 // we configured teh logger
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
@@ -107,7 +107,7 @@ app.MapControllerRoute(
     // name: "default",
     // pattern: "{controller=Login}/{action=Index}/{id?}");
     name: "default",
-    pattern: "{controller=Curriculum}/{action=UserInformation}/{id?}");
+    pattern: "{controller=PersonalInformation}/{action=PersonalInformation}/{id?}");
 
 app.Run();
 

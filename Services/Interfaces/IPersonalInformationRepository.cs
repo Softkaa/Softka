@@ -2,7 +2,7 @@ using Softka.Models.Dtos;
 
 namespace Softka.Services
 {
-    public interface ICurriculumRepository
+    public interface IPersonalInformationRepository
     {
         CurriculumDto GetCurriculum();
     }

@@ -7,7 +7,7 @@ using Softka.Models.Dtos;
 using Softka.Services;
 namespace Softka.Repositories
 {
-    public class CurriculumRepository : ICurriculumRepository
+    public class PersonalInformationRepository : IPersonalInformationRepository
     {
         public CurriculumDto GetCurriculum()
         {

@@ -5,19 +5,19 @@ using Softka.Models.Dtos;
 
 namespace Softka.Controllers 
 {
-    public class CurriculumController : Controller
+    public class PersonalInformationController : Controller
     {
-        public readonly ICurriculumRepository _curriculumRepository;
+        public readonly IPersonalInformationRepository _personalInformationRepository;
         // In this line add the Helpers and Providers
         // private readonly HelpersUploadFiles helperUploadFiles;
-        public CurriculumController(ICurriculumRepository curriculumRepository)
+        public PersonalInformationController(IPersonalInformationRepository personalInformationRepository)
         {
-            _curriculumRepository = curriculumRepository;
+            _personalInformationRepository = personalInformationRepository;
             //_helperUploadFiles = helperUpload; 
         }
-        public IActionResult UserInformation()
+        public IActionResult PersonalInformation()
         {
-            var CurriculumDto = _curriculumRepository.GetCurriculum();
+            var CurriculumDto = _personalInformationRepository.GetCurriculum();
             if(CurriculumDto == null)
             {
                 return NotFound();
