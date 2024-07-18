@@ -20,7 +20,7 @@ namespace Softka.Controllers
             var CurriculumDto = _personalInformationRepository.GetCurriculum();
             if(CurriculumDto == null)
             {
-                return NotFound();
+                return NotFound(Utils.Exceptions.ErrorExceptions.CreateNotFound());
             }            
             return View(CurriculumDto);
         }

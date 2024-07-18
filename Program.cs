@@ -29,7 +29,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 var Context = new CustomAssemblyLoad();
-var path = Context.LoadUnmanagedLibrary(Path.Combine(Directory.GetCurrentDirectory(), "C:/Users/fjgt2/OneDrive/Escritorio/Softka_Riwi/Softka/Utils/LibreryPdf/libwkhtmltox.dll"));
+var path = Context.LoadUnmanagedLibrary(Path.Combine(Directory.GetCurrentDirectory(), "C:/Users/mateo/OneDrive/Escritorio/Softka/Softka/Utils/LibreryPdf/libwkhtmltox.dll"));
 builder.Services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
 
 System.Console.WriteLine($"cargando archivo path: {path}");
@@ -116,10 +116,8 @@ app.UseAuthorization();
 
 
 app.MapControllerRoute(
-    // name: "default",
-    // pattern: "{controller=Login}/{action=Index}/{id?}");
     name: "default",
-    pattern: "{controller=PersonalInformation}/{action=PersonalInformation}/{id?}");
-
+    pattern: "{controller=Login}/{action=Index}/{id?}");
+ 
 app.Run();
 
