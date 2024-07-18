@@ -1,16 +1,14 @@
--- Active: 1720588487963@@brb7cf2qxxih75x8siuv-mysql.services.clever-cloud.com@3306
-
 --Table Users
-create table Users(
-    Id int auto_increment PRIMARY KEY,
-    Names varchar(45) not null,
-    LastNames varchar(45) not null,
-    TypeDocument enum("CC", "CE", "TI", "Passport") not null,
-    Document varchar(20) not null,
-    Email varchar(150) not null unique,
-    Age int not null,
-    Password varchar(150) unique,
-    DateRegister date
+CREATE TABLE Users(
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Names VARCHAR(45) NOT NULL,
+    LastNames VARCHAR(45) NOT NULL,
+    TypeDocument ENUM("CC", "CE", "TI", "Passport") NOT NULL,
+    Document VARCHAR(20) NOT NULL,
+    Email VARCHAR(150) NOT NULL UNIQUE,
+    Age INT NOT NULL,
+    Password VARCHAR(150) UNIQUE,
+    DateRegister DATE
 );
 
 --Insert information table Users
@@ -22,16 +20,17 @@ VALUES
 ('Ana', 'Martinez', 'Passport', '99887766', 'ana.martinez@example.com', 32, 'password4', '2023-04-01'),
 ('Luis', 'Garcia', 'CC', '55667788', 'luis.garcia@example.com', 27, 'password5', '2023-05-01');
 
-create table Authentications(
-    Id int auto_increment PRIMARY KEY,
-    Token text not null,
-    RefreshToken text not null,
-    IssueDate date not null,
-    ExpirationDate date not null,   
-    IsActive bool not null,
-    IsRefreshed bool DEFAULT false,
-    UserId int,
-    Foreign Key (UserId) REFERENCES Users(Id)
+--Table Authentications
+CREATE TABLE Authentications(
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Token TEXT NOT NULL,
+    RefreshToken TEXT NOT NULL,
+    IssueDate DATE NOT NULL,
+    ExpirationDate DATE NOT NULL,
+    IsActive BOOLEAN NOT NULL,
+    IsRefreshed BOOLEAN DEFAULT FALSE,
+    UserId INT,
+    FOREIGN KEY (UserId) REFERENCES Users(Id)
 );
 
 --Insert information table Authentications
@@ -43,39 +42,39 @@ VALUES
 ('jwtToken4', 'refreshToken4', '2023-04-01', '2024-04-01', TRUE, 4),
 ('jwtToken5', 'refreshToken5', '2023-05-01', '2024-05-01', TRUE, 5);
 
---Table UserRoles
-create table UserRoles(
-    Id int auto_increment PRIMARY KEY,
-    UserId int,
-    RoleId int,
-    Foreign Key (UserId) REFERENCES Users(Id),
-    Foreign Key (RoleId) REFERENCES Roles(Id)
-);
-
---Insert information table UserRoles
-INSERT INTO UserRoles (UserId, RoleId)
-VALUES 
-(1, 1), (2, 2), (3, 3), (4, 4), (5, 5);
-
 --Table Roles
-create table Roles(
-    Id int auto_increment PRIMARY KEY,
-    Name enum("Admin", "User") not null
+CREATE TABLE Roles(
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Name ENUM("Admin", "User") NOT NULL
 );
 
 --Insert information table Roles
 INSERT INTO Roles (Name) VALUES ('Admin'), ('User');
 
+--Table UserRoles
+CREATE TABLE UserRoles(
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    UserId INT,
+    RoleId INT,
+    FOREIGN KEY (UserId) REFERENCES Users(Id),
+    FOREIGN KEY (RoleId) REFERENCES Roles(Id)
+);
+
+--Insert information table UserRoles
+INSERT INTO UserRoles (UserId, RoleId)
+VALUES 
+(1, 1), (2, 2), (3, 2), (4, 2), (5, 2);
+
 --Table Curriculums
-create table Curriculums(
-    Id int auto_increment PRIMARY KEY,
-    Age int not null,
-    Nationality varchar(45) not null,
-    Photo text not null,
-    CivilStatus enum("soltero", "casado", "viudo") not null,
-    Phone varchar(20) not null,
-    UserId int,
-    Foreign Key (UserId) REFERENCES Users(Id)
+CREATE TABLE Curriculums(
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Age INT NOT NULL,
+    Nationality VARCHAR(45) NOT NULL,
+    Photo TEXT NOT NULL,
+    CivilStatus ENUM("soltero", "casado", "viudo") NOT NULL,
+    Phone VARCHAR(20) NOT NULL,
+    UserId INT,
+    FOREIGN KEY (UserId) REFERENCES Users(Id)
 );
 
 --Insert information table Curriculums
@@ -88,62 +87,70 @@ VALUES
 (27, 'Colombiana', 'photo5.jpg', 'casado', '3006789012', 5);
 
 --Table Skills
-create table Skills(
-    Id int auto_increment PRIMARY KEY,
-    Name text not null,
-    CurriculumsId int,
-    Foreign Key (CurriculumsId) REFERENCES Curriculums(Id)
+CREATE TABLE Skills(
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Name TEXT NOT NULL,
+    Description TEXT NOT NULL,
+    CurriculumsId INT,
+    FOREIGN KEY (CurriculumsId) REFERENCES Curriculums(Id)
 );
 
 --Insert information table Skills
-INSERT INTO Skills (Name, CurriculumsId)
+INSERT INTO Skills (Name, Description, CurriculumsId)
 VALUES 
-('Python', 1), ('JavaScript', 2), ('HTML', 3), ('CSS', 4), ('SQL', 5);
+('Python', 'Lenguaje de programación', 1),
+('JavaScript', 'Lenguaje de programación', 2),
+('HTML', 'Lenguaje de marcado', 3),
+('CSS', 'Lenguaje de estilos', 4),
+('SQL', 'Lenguaje de bases de datos', 5);
 
 --Table Educations
-create table Educations(
-    Id int auto_increment PRIMARY KEY,
-    Institution varchar(100) not null,
-    EducationalTitle varchar(100) not null,
-    CurriculumsId int,
-    Foreign Key (CurriculumsId) REFERENCES Curriculums(Id)
+CREATE TABLE Educations(
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Institution VARCHAR(100) NOT NULL,
+    EducationalTitle VARCHAR(100) NOT NULL,
+    YearStart DATE,
+    YearEnd DATE,
+    CurriculumsId INT,
+    FOREIGN KEY (CurriculumsId) REFERENCES Curriculums(Id)
 );
 
 --Insert information table Educations
-INSERT INTO Educations (Institution, EducationalTitle, CurriculumsId)
+INSERT INTO Educations (Institution, EducationalTitle, YearStart, YearEnd, CurriculumsId)
 VALUES 
-('Universidad Nacional', 'Ingeniería de Sistemas', 1),
-('Universidad de los Andes', 'Ingeniería de Software', 2),
-('Universidad Javeriana', 'Ingeniería Informática', 3),
-('Universidad del Rosario', 'Ingeniería Electrónica', 4),
-('Universidad EAFIT', 'Ingeniería de Telecomunicaciones', 5);
+('Universidad Nacional', 'Ingeniería de Sistemas', '2010-01-01', '2015-01-01', 1),
+('Universidad de los Andes', 'Ingeniería de Software', '2011-01-01', '2016-01-01', 2),
+('Universidad Javeriana', 'Ingeniería Informática', '2012-01-01', '2017-01-01', 3),
+('Universidad del Rosario', 'Ingeniería Electrónica', '2013-01-01', '2018-01-01', 4),
+('Universidad EAFIT', 'Ingeniería de Telecomunicaciones', '2014-01-01', '2019-01-01', 5);
 
 --Table WorkExperiences
-create table WorkExperiences(
-    Id int auto_increment PRIMARY KEY,
-    Company varchar(100) not null,
-    Year date not null,
-    CurriculumsId int,
-    Foreign Key (CurriculumsId) REFERENCES Curriculums(Id)
+CREATE TABLE WorkExperiences(
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Company VARCHAR(100),
+    Year DATE,
+    Description TEXT,
+    CurriculumsId INT,
+    FOREIGN KEY (CurriculumsId) REFERENCES Curriculums(Id)
 );
 
 --Insert information table WorkExperiences
-INSERT INTO WorkExperiences (Company, Year, CurriculumsId)
+INSERT INTO WorkExperiences (Company, Year, Description, CurriculumsId)
 VALUES 
-('Company1', '2020-01-01', 1),
-('Company2', '2019-01-01', 2),
-('Company3', '2018-01-01', 3),
-('Company4', '2017-01-01', 4),
-('Company5', '2016-01-01', 5);
+('Company1', '2020-01-01', 'Desarrollador de software', 1),
+('Company2', '2019-01-01', 'Ingeniero de software', 2),
+('Company3', '2018-01-01', 'Desarrollador frontend', 3),
+('Company4', '2017-01-01', 'Desarrollador backend', 4),
+('Company5', '2016-01-01', 'Analista de sistemas', 5);
 
 --Table WorkReferences
-create table WorkReferences(
-    Id int auto_increment PRIMARY KEY,
-    Name varchar(45) not null,
-    Email varchar(150) not null,
-    Phone varchar(20) not null,
-    Curriculums int,
-    Foreign Key (Curriculums) REFERENCES Curriculums(Id)
+CREATE TABLE WorkReferences(
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(45) NOT NULL,
+    Email VARCHAR(150) NOT NULL,
+    Phone VARCHAR(20) NOT NULL,
+    Curriculums INT,
+    FOREIGN KEY (CurriculumsId) REFERENCES Curriculums(Id)
 );
 
 --Insert information table WorkReferences
@@ -155,5 +162,4 @@ VALUES
 ('Ref4', 'ref4@example.com', '3105678901', 4),
 ('Ref5', 'ref5@example.com', '3106789012', 5);
 
-
-SELECT * FROM Users;
+select * from Users;

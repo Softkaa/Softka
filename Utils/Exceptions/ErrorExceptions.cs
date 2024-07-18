@@ -36,7 +36,7 @@ namespace Softka.Utils.Exceptions
             return new ProblemDetails
             {
                 Title = "Bad Request",
-                Status = StatusCodes.Status500InternalServerError,
+                Status = StatusCodes.Status400BadRequest,
                 Detail = "Bad Request. Please check the submitted data and try again."
             };
         }

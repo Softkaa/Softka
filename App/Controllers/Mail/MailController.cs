@@ -28,7 +28,6 @@ namespace Softka.Controllers
 
          if (string.IsNullOrWhiteSpace(email))
             {
-                // Considera retornar algún mensaje de error o redirigir al usuario a una vista específica
                 return View("Index");
             }
         var user = _context.Users.FirstOrDefault(e => e.Email == email);
@@ -36,11 +35,10 @@ namespace Softka.Controllers
                 var subject = "Recuperación de contraseña";
                 var body = $"Hola, {user.Names},\nPor favor, sigue este enlace para restablecer tu contraseña."; 
                 _mailRepository.SendEmail(user.Email, subject, body, user); 
-         return View("Success");
+             return RedirectToAction("Index", "Login");
             }
             else
             {
-                // Considera manejar el caso en que el correo no exista en la base de datos
                 return View("Error");
             }
        }
