@@ -1,0 +1,144 @@
+@model Softka.Models.Dtos.CurriculumDto
+@section header{
+     <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Softka</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                    </ul>                 
+                </div>
+            </div>
+        </nav>
+    </header>
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <img src="@Model.Photo" alt="Profile Image" class="profile-img">
+            <h2 class="mt-3">
+                @if (Model.User != null && Model.User.Count > 0)
+                {
+                    var user = Model.User.First();
+                    @($"Detalles del Usuario: {user.Names} {user.LastNames}")
+                }
+                else
+                {
+                    @("Detalles del Usuario")
+                }
+            </h2>
+            <p>Desarrollador Web</p>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Personal Information</div>
+                <div class="card-body">
+                    @if (Model.User != null && Model.User.Count > 0)
+                    {
+                        var user = Model.User.First();
+                        <p><strong>Names:</strong> @user.Names @user.LastNames</p>
+                        <p><strong>Type of Document:</strong> @user.TypeDocument</p>
+                        <p><strong>Document:</strong> @user.Document</p>
+                        <p><strong>Email:</strong> @user.Email</p>
+                        <p><strong>Age:</strong> @user.Age</p>
+                        <p><strong>Nationality:</strong> @Model.Nationality</p>
+                        <p><strong>Phone:</strong> @Model.Phone</p>    //In this line add the logic of antony
+                        <div class="d-flex justify-content-center">
+                            <a class="btn btn-success" asp-controller="" asp-action="">Upate</a> 
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Education</div>
+                <div class="card-body">
+                    @if (Model.Education != null && Model.Education.Count > 0)
+                    {
+                        foreach (var edu in Model.Education)
+                        {
+                            <div class="mb-3">
+                                <h5 class="mb-1">@edu.EducationTitle</h5>
+                                <p class="mb-0">Name of Institution: <strong>@edu.Institution</strong></p>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <a class="btn btn-success" asp-controller="" asp-action="">Upate</a>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Skills</div>
+                <div class="card-body">
+                    @if (Model.Skill != null && Model.Skill.Count > 0)
+                    {
+                        foreach (var skill in Model.Skill)
+                        {
+                            <div class="mb-3">
+                                <h5 class="mb-1"><strong>Skill:</strong> @skill.Name</h5>
+                                <p>@skill.Description</p>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <a class="btn btn-success" asp-controller="" asp-action="">Upate</a>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Work Experience</div>
+                <div class="card-body">
+                    @if (Model.WorkExperience != null && Model.WorkExperience.Count > 0)
+                    {
+                        foreach (var work in Model.WorkExperience)
+                        {
+                            <div class="mb-3">
+                                <h5 class="mb-1">Company: @work.Company</h5>
+                                <p><strong>Year:</strong> @work.Year.Year</p>
+                                <p>@work.Description</p>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                <a class="btn btn-success" asp-controller="" asp-action="">Upate</a>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Work References</div>
+                <div class="card-body">
+                    @if (Model.WorkReferences != null && Model.WorkReferences.Count > 0)
+                    {
+                        foreach (var reference in Model.WorkReferences)
+                        {
+                            <div class="mb-3">
+                                <h6 class="mb-1"><strong>Name:</strong> @reference.Name</h6>
+                                <p><strong>Email:</strong> @reference.Email</p>
+                                <p><strong>Phone:</strong> @reference.Phone</p>
+                            </div>
+                            <div class="d-flex justify-content-center"><a class="btn btn-success" asp-controller="" asp-action="">Upate</a></div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="wwwroot/dist/umd/popper.min.js"></script> 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script> 
+

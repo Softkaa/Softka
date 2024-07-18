@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using Softka.Models;
 using FluentValidation;
 using Softka.Validators;
+using Softka.Repositories;
 
 using DinkToPdf;
 using DinkToPdf.Contracts;
@@ -81,6 +82,8 @@ builder.Services.AddScoped<Bcrypt>();
 
 //Add the Scooped of Method GeAll
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+//Add the Repository of the Curriculum
+builder.Services.AddScoped<IPersonalInformationRepository, PersonalInformationRepository>();
 // we configured teh logger
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
@@ -113,7 +116,10 @@ app.UseAuthorization();
 
 
 app.MapControllerRoute(
+    // name: "default",
+    // pattern: "{controller=Login}/{action=Index}/{id?}");
     name: "default",
-    pattern: "{controller=Login}/{action=Index}/{id?}");
+    pattern: "{controller=PersonalInformation}/{action=PersonalInformation}/{id?}");
 
 app.Run();
+
