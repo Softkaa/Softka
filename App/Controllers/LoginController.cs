@@ -121,8 +121,9 @@ public class LoginController : Controller
     {
         //clear cookies
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        HttpContext.Response.Cookies.Delete("jwt");
 
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("Index", "Login");
 
     }
 }
