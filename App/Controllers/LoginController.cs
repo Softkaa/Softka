@@ -80,6 +80,8 @@ public class LoginController : Controller
                 Password = user.Password
             };
             var Token = _jwtRepository.GenerateToken(UserDto);
+            _logger.LogInformation($"Token User found:{Token}");
+            
             Response.Headers.Add("Authorization", "Bearer " + Token);
             Response.Cookies.Append("jwt", Token);
 
@@ -119,8 +121,9 @@ public class LoginController : Controller
     {
         //clear cookies
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        HttpContext.Response.Cookies.Delete("jwt");
 
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("Index", "Login");
 
     }
 }
